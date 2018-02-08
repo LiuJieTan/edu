@@ -54,6 +54,13 @@ class User extends Base
                     $result = '验证通过，点击[确定]进入';
                     Session::set('user_id', $user->id);
                     Session::set('user_info', $user->getData());
+
+                    //更新用户登录次数
+                    $user->setInc('login_count',1);
+                    //添加用户登录时间
+                    $user->login_time = intval(time());
+                    $user->login_ip = Request::instance()->ip();
+                    $user->save();
                 }
             }
             return ['status'=> $status,'message'=>$result,'data' =>$data];
